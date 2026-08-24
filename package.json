@@ -1,0 +1,24 @@
+{
+  "name": "flight-price-scraper",
+  "version": "1.0.0",
+  "description": "Scrape trip.com flight prices per airline for routes listed in an Excel sheet.",
+  "main": "scrape.js",
+  "scripts": {
+    "scrape": "node scrape.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yuanyuan-Jade/flight-price-scraper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yuanyuan-Jade/flight-price-scraper/issues"
+  },
+  "homepage": "https://github.com/Yuanyuan-Jade/flight-price-scraper#readme",
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "playwright": "^1.56.1"
+  }
+}
