@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 const { readRoutes } = require('./lib/readRoutes');
 const { writeResults } = require('./lib/writeResults');
 const { searchRoute } = require('./lib/tripSearch');
-const { summarize } = require('./lib/extractPrices');
+const { summarizeFlights } = require('./lib/extractPrices');
 
 function parseArgs(argv) {
   const args = { headless: false, year: 2026, carrier: 'MU', delayMin: 6000, delayMax: 15000 };
@@ -64,24 +64,28 @@ async function main() {
   for (const [i, route] of routes.entries()) {
     process.stdout.write(`[${i + 1}/${routes.length}] ${route.od} (${route.departDate}) ... `);
     try {
-      const { priceMap, source } = await searchRoute(context, route, {
+      const { flights, source } = await searchRoute(context, route, {
         debugDir: args.debug ? 'debug' : null,
         currency: 'EUR',
         locale: 'en-US',
       });
 
-      if (priceMap.size === 0) {
+      if (flights.length === 0) {
         throw new Error('No carrier/price pairs found (see --debug output to diagnose)');
       }
 
-      const summary = summarize(priceMap, args.carrier);
+      const summary = summarizeFlights(flights, { targetCarrier: args.carrier });
       resultsByRow[route.rowNumber] = summary;
 
       const flag = source === 'dom' ? '' : ` [${source}, verify manually]`;
-      console.log(
-        `OK${flag} — ${args.carrier} ${summary.muShown ? summary.muPrice : 'not shown'}; ` +
-        `others: ${summary.others.map((o) => `${o.code} ${o.price}`).join(', ') || 'none'}`,
-      );
+      if (summary.noQualifyingFlights) {
+        console.log(`OK${flag} — 无 (no <=1-stop flights found)`);
+      } else {
+        console.log(
+          `OK${flag} — ${args.carrier} ${summary.muShown ? summary.muPrice : 'not shown'}; ` +
+          `others: ${summary.others.map((o) => `${o.code} ${o.price}`).join(', ') || 'none'}`,
+        );
+      }
     } catch (err) {
       resultsByRow[route.rowNumber] = { error: err.message };
       console.log(`FAILED — ${err.message}`);
