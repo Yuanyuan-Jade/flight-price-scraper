@@ -64,7 +64,7 @@ async function main() {
   for (const [i, route] of routes.entries()) {
     process.stdout.write(`[${i + 1}/${routes.length}] ${route.od} (${route.departDate}) ... `);
     try {
-      const { priceMap, usedFallbackText } = await searchRoute(context, route, {
+      const { priceMap, source } = await searchRoute(context, route, {
         debugDir: args.debug ? 'debug' : null,
         currency: 'EUR',
         locale: 'en-US',
@@ -77,7 +77,7 @@ async function main() {
       const summary = summarize(priceMap, args.carrier);
       resultsByRow[route.rowNumber] = summary;
 
-      const flag = usedFallbackText ? ' [text-fallback, verify manually]' : '';
+      const flag = source === 'dom' ? '' : ` [${source}, verify manually]`;
       console.log(
         `OK${flag} — ${args.carrier} ${summary.muShown ? summary.muPrice : 'not shown'}; ` +
         `others: ${summary.others.map((o) => `${o.code} ${o.price}`).join(', ') || 'none'}`,
