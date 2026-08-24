@@ -87,12 +87,15 @@ async function main() {
       console.log(`FAILED — ${err.message}`);
     }
 
+    // Write after every route (not just at the end) so Ctrl+C or a crash
+    // partway through doesn't throw away routes already scraped.
+    await writeResults(args.input, args.output, resultsByRow);
+
     if (i < routes.length - 1) await randomDelay(args.delayMin, args.delayMax);
   }
 
   await browser.close();
 
-  await writeResults(args.input, args.output, resultsByRow);
   console.log(`\nWrote results for ${Object.keys(resultsByRow).length} routes to ${args.output}`);
 
   const failed = Object.entries(resultsByRow).filter(([, r]) => r.error);
