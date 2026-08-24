@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>航线比价打开器</title>
+<style>
+  body {
+    font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+    padding: 20px;
+    background: #f5f6f8;
+    color: #1f2328;
+  }
+  h1 {
+    font-size: 16px;
+    margin: 0 0 16px;
+  }
+  label {
+    display: block;
+    font-size: 13px;
+    margin: 12px 0 4px;
+    color: #57606a;
+  }
+  input, select, button {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    padding: 8px 10px;
+    border: 1px solid #d0d7de;
+    border-radius: 6px;
+  }
+  button {
+    margin-top: 18px;
+    background: #1a73e8;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  button:disabled {
+    background: #a8c7f0;
+    cursor: default;
+  }
+  #status {
+    margin-top: 14px;
+    font-size: 13px;
+    white-space: pre-line;
+    color: #57606a;
+  }
+  #status.error { color: #c62828; }
+  #status.ok { color: #2e7d32; }
+</style>
+</head>
+<body>
+  <h1>航线比价打开器</h1>
+
+  <label for="date">出发日期</label>
+  <input type="date" id="date" />
+
+  <label for="route">航线</label>
+  <select id="route"></select>
+
+  <button id="search">搜索</button>
+
+  <div id="status"></div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
