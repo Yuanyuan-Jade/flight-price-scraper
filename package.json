@@ -1,0 +1,49 @@
+{
+  "name": "flight-search-launcher",
+  "version": "2.0.0",
+  "description": "Pick a route and date, open its search results across configured OTA websites for manual comparison.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder && node scripts/rename-dist-folder.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yuanyuan-Jade/flight-price-scraper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yuanyuan-Jade/flight-price-scraper/issues"
+  },
+  "homepage": "https://github.com/Yuanyuan-Jade/flight-price-scraper#readme",
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  },
+  "devDependencies": {
+    "electron": "^43.4.1",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.flightsearchlauncher.app",
+    "productName": "航线比价打开器",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "lib/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "data",
+        "to": "../data"
+      }
+    ],
+    "win": {
+      "target": [
+        "dir"
+      ]
+    }
+  }
+}
