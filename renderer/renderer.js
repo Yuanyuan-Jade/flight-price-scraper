@@ -10,9 +10,18 @@ function setStatus(text, kind) {
   statusEl.className = kind || '';
 }
 
+function nextWeekFriday(from = new Date()) {
+  const jsDay = from.getDay(); // 0=Sun..6=Sat
+  const isoDay = jsDay === 0 ? 7 : jsDay; // 1=Mon..7=Sun
+  const thisMonday = new Date(from);
+  thisMonday.setDate(from.getDate() - (isoDay - 1));
+  const friday = new Date(thisMonday);
+  friday.setDate(thisMonday.getDate() + 7 + 4); // next week's Monday + 4 days = next week's Friday
+  return friday;
+}
+
 async function init() {
-  const today = new Date();
-  dateInput.value = today.toISOString().slice(0, 10);
+  dateInput.value = nextWeekFriday().toISOString().slice(0, 10);
 
   const result = await window.api.loadRoutes();
   if (!result.ok) {
